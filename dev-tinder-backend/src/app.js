@@ -4,34 +4,59 @@ const express = require('express');
 
 const app = express();
 
-
 app.use("/user",
     (req, res, next) => {
         console.log("Handling to the route handler 1");
         //res.send("Handling to the route handler 1")
         next();
         //res.send("Handling to the route handler 1")
-    },
+    } //middleware
+)
+app.use("/user",
+    (req, res, next) => {
+        console.log("Handling to the route handler 2");
+        res.send("Handling to the route handler 2");
+         //next(); 
+    }, //middleware
     (req, res, next) => {
         console.log("Handling to the route handler 2");
         //res.send("Handling to the route handler 2");
-        next();
-    },
+         //next(); 
+    }, //middleware
     (req, res, next) => {
         console.log("Handling to the route handler 3");
-        //res.send("Handling to the route handler 3");
-        next();
-    },
-    (req, res, next) => {
-        console.log("Handling to the route handler 4");
-        //res.send("Handling to the route handler 4");
-        next();
-    },
-    (req, res, next) => {
-        console.log("Handling to the route handler 5");
-        res.send("Handling to the route handler 5");
+        res.send("Handling to the route handler 3");
+         //next(); 
     }
-);
+)
+
+// app.use("/user",
+//     (req, res, next) => {
+//         console.log("Handling to the route handler 1");
+//         //res.send("Handling to the route handler 1")
+//         next();
+//         //res.send("Handling to the route handler 1")
+//     },
+//     (req, res, next) => {
+//         console.log("Handling to the route handler 2");
+//         //res.send("Handling to the route handler 2");
+//         next();
+//     },
+//     (req, res, next) => {
+//         console.log("Handling to the route handler 3");
+//         //res.send("Handling to the route handler 3");
+//         next();
+//     },
+//     (req, res, next) => {
+//         console.log("Handling to the route handler 4");
+//         //res.send("Handling to the route handler 4");
+//         next();
+//     },
+//     (req, res, next) => {
+//         console.log("Handling to the route handler 5");
+//         res.send("Handling to the route handler 5");
+//     }
+// );
 
 // app.use("/test", (req,res)=>{
 //     res.send("You are hitting the test");
