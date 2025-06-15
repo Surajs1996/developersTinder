@@ -8,30 +8,70 @@ const User = require("./models/user")
 
 //const {adminAuth, userAuth} = require("./middleware/auth")
 
-app.post("/signUp", async (req, res)=>{
-   const  user = new User({
-        firstName : "Suraj",
-        lastName : "Salunkhe",
-        age:28,
-        emailId : "suraj@salunkhe.com",
-        password: "123456",
-        gender:"male"
-    })
-    try{
-    await user.save();
-    res.send("user saved successfully")
+app.use(express.json());
 
-    } catch(err){
+app.post("/signUp", async (req, res) => {
+    //Creating a new instance of the user
+    const user = new User(req.body)
+    try {
+        await user.save();
+        res.send("user saved successfully")
+
+    } catch (err) {
         res.status(400).send("Error while saving the user" + err.message);
     }
 
+});
+
+app.get("/user", async (req, res) => {
+    // const userEmail = req.query.emailId;
+    const userEmail = req.body.emailId;
+    try {
+        res.send(await User.find({ emailId: userEmail }))
+    }
+    catch (err) {
+        res.status(400).send("something went wrong")
+    }
 })
+
+app.get("/feed", async (req, res) => {
+
+    try {
+        res.send(await User.find({}));
+    }
+    catch (err) {
+        res.status(400).send("something went wrong")
+    }
+})
+
+app.patch("/user", async (req, res) => {
+
+    try {
+        await User.findOneAndUpdate({ emailId: req.body.emailId }, req.body)
+        res.send(await User.find({}));
+    }
+    catch (err) {
+        res.status(400).send("something went wrong")
+    }
+})
+
+app.delete("/user", async (req, res) => {
+    try {
+        await User.findOneAndDelete({ emailId: req.body.emailId }, req.body);
+        res.send("User Deleted successfully");
+
+    } catch (err) {
+        res.status(400).send("something went wrong" + err.message);
+    }
+})
+
+
 
 coonectDB().then(() => {
     console.log("DB connection successfull");
     app.listen(3000, () => {
-    console.log("server is running successfully on port 3000");
-});
+        console.log("server is running successfully on port 3000");
+    });
 }).catch(() => {
     console.log("DB connection failed");
 })
